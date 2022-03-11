@@ -118,7 +118,8 @@ cscope.out
 cscope.in.out
 cscope.po.out
 
-
+# output
+output_images/*
 
 # End of https://www.gitignore.io/api/tags,python
 
