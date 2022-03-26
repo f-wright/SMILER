@@ -21,7 +21,7 @@ from smiler_tools import utils
 model_manager = ModelManager(os.path.join(HERE_PATH, "models"))
 config = SmilerConfig(os.path.join(HERE_PATH, "config.json"))
 
-if os.getuid() is 0:
+if os.getuid() == 0:
     print("ERROR: Don't run SMILER as root!")
     exit(10)
 
