@@ -5,9 +5,18 @@ import theano.tensor as T
 
 
 class EltWiseProduct(Layer):
-    def __init__(self, downsampling_factor=10, init='glorot_uniform', activation='linear',
-                 weights=None, W_regularizer=None, activity_regularizer=None,
-                 W_constraint=None, input_dim=None, **kwargs):
+    def __init__(
+        self,
+        downsampling_factor=10,
+        init="glorot_uniform",
+        activation="linear",
+        weights=None,
+        W_regularizer=None,
+        activity_regularizer=None,
+        W_constraint=None,
+        input_dim=None,
+        **kwargs
+    ):
 
         self.downsampling_factor = downsampling_factor
         self.init = initializations.get(init)
@@ -22,7 +31,7 @@ class EltWiseProduct(Layer):
 
         self.input_dim = input_dim
         if self.input_dim:
-            kwargs['input_shape'] = (self.input_dim,)
+            kwargs["input_shape"] = (self.input_dim,)
 
         self.input_spec = [InputSpec(ndim=4)]
         super(EltWiseProduct, self).__init__(**kwargs)
@@ -53,18 +62,31 @@ class EltWiseProduct(Layer):
         return input_shape
 
     def call(self, x, mask=None):
-        output = x*T.nnet.abstract_conv.bilinear_upsampling(K.expand_dims(K.expand_dims(1 + self.W, 0), 0), self.downsampling_factor, 1, 1)
+        output = x * T.nnet.abstract_conv.bilinear_upsampling(
+            K.expand_dims(K.expand_dims(1 + self.W, 0), 0),
+            self.downsampling_factor,
+            1,
+            1,
+        )
         return output
 
     def get_config(self):
-        config = {'name': self.__class__.__name__,
-                  'output_dim': self.input_dim,
-                  'init': self.init.__name__,
-                  'activation': self.activation.__name__,
-                  'W_regularizer': self.W_regularizer.get_config() if self.W_regularizer else None,
-                  'activity_regularizer': self.activity_regularizer.get_config() if self.activity_regularizer else None,
-                  'W_constraint': self.W_constraint.get_config() if self.W_constraint else None,
-                  'input_dim': self.input_dim,
-                  'downsampling_factor': self.downsampling_factor}
+        config = {
+            "name": self.__class__.__name__,
+            "output_dim": self.input_dim,
+            "init": self.init.__name__,
+            "activation": self.activation.__name__,
+            "W_regularizer": self.W_regularizer.get_config()
+            if self.W_regularizer
+            else None,
+            "activity_regularizer": self.activity_regularizer.get_config()
+            if self.activity_regularizer
+            else None,
+            "W_constraint": self.W_constraint.get_config()
+            if self.W_constraint
+            else None,
+            "input_dim": self.input_dim,
+            "downsampling_factor": self.downsampling_factor,
+        }
         base_config = super(EltWiseProduct, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))

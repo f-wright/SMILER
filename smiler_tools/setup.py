@@ -14,9 +14,9 @@ setuptools.setup(
     url="https://github.com/tsotsoslab/SMILER",
     packages=setuptools.find_packages(),
     install_requires=[
-        'numpy',
-        'scipy==1.2.1',
-        'pillow==5.1',
+        "numpy",
+        "scipy==1.2.1",
+        "pillow==5.1",
     ],
     classifiers=(
         "Programming Language :: Python :: 3",

@@ -3,7 +3,7 @@ import theano.tensor as T
 
 class Model(object):
     def __init__(self, input_width, input_height, batch_size=32):
-        
+
         self.inputWidth = input_width
         self.inputHeight = input_height
 

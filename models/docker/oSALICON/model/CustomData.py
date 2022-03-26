@@ -3,10 +3,10 @@ import numpy as np
 
 
 class CustomData(caffe.Layer):
-    """ LOAD CUSTOM DATA FROM PYTHON BECAUSE MEMORYDATALAYER DOESN'T WORK"""
+    """LOAD CUSTOM DATA FROM PYTHON BECAUSE MEMORYDATALAYER DOESN'T WORK"""
 
     def setup(self, bottom, top):
-        vals = [int(x) for x in self.param_str.split(',')]
+        vals = [int(x) for x in self.param_str.split(",")]
         self.MY_TOP_SHAPE = tuple(vals)
 
     def reshape(self, bottom, top):

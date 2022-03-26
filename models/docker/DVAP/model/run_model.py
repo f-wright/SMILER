@@ -8,7 +8,7 @@ import sys
 import time
 import cv2
 
-sys.path.insert(0, '/opt/caffe/python')
+sys.path.insert(0, "/opt/caffe/python")
 
 import caffe
 
@@ -28,31 +28,31 @@ def prepare_image(img):
 
 
 def main():
-    #remove the following two lines if testing with cpu
+    # remove the following two lines if testing with cpu
     caffe.set_mode_gpu()
     # choose which GPU you want to use
     caffe.set_device(0)
     caffe.SGDSolver.display = 0
     # load net
-    net = caffe.Net('models/attention_test.prototxt', 'models/attention_final',
-                    caffe.TEST)
+    net = caffe.Net(
+        "models/attention_test.prototxt", "models/attention_final", caffe.TEST
+    )
 
     def compute_saliency(image_path):
         img = cv2.imread(image_path, cv2.IMREAD_COLOR)
         im = prepare_image(img)
 
         # shape for input (data blob is N x C x H x W), set data
-        net.blobs['data'].reshape(1, *im.shape)
-        net.blobs['data'].data[...] = im
+        net.blobs["data"].reshape(1, *im.shape)
+        net.blobs["data"].data[...] = im
         # run net and take argmax for prediction
         res = net.forward()
-        salmap = np.squeeze(res['final_attentionmap'])
+        salmap = np.squeeze(res["final_attentionmap"])
         salmap /= np.max(salmap)
-        im = cv2.resize(
-            salmap, (IMAGE_DIM, IMAGE_DIM), interpolation=cv2.INTER_LINEAR)
+        im = cv2.resize(salmap, (IMAGE_DIM, IMAGE_DIM), interpolation=cv2.INTER_LINEAR)
         salmap = cv2.resize(
-            salmap, (img.shape[1], img.shape[0]),
-            interpolation=cv2.INTER_LINEAR)
+            salmap, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_LINEAR
+        )
 
         return (salmap * 255).astype(np.uint8)
 

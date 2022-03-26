@@ -17,15 +17,23 @@ def padding(img, shape_r=480, shape_c=640, channels=3):
         img = cv2.resize(img, (new_cols, shape_r))
         if new_cols > shape_c:
             new_cols = shape_c
-        img_padded[:, ((img_padded.shape[1] - new_cols) // 2):(
-            (img_padded.shape[1] - new_cols) // 2 + new_cols)] = img
+        img_padded[
+            :,
+            ((img_padded.shape[1] - new_cols) // 2) : (
+                (img_padded.shape[1] - new_cols) // 2 + new_cols
+            ),
+        ] = img
     else:
         new_rows = (original_shape[0] * shape_c) // original_shape[1]
         img = cv2.resize(img, (shape_c, new_rows))
         if new_rows > shape_r:
             new_rows = shape_r
-        img_padded[((img_padded.shape[0] - new_rows) // 2):(
-            (img_padded.shape[0] - new_rows) // 2 + new_rows), :] = img
+        img_padded[
+            ((img_padded.shape[0] - new_rows) // 2) : (
+                (img_padded.shape[0] - new_rows) // 2 + new_rows
+            ),
+            :,
+        ] = img
 
     return img_padded
 
@@ -66,12 +74,20 @@ def postprocess_predictions(pred, shape_r, shape_c):
     if rows_rate > cols_rate:
         new_cols = (predictions_shape[1] * shape_r) // predictions_shape[0]
         pred = cv2.resize(pred, (new_cols, shape_r))
-        img = pred[:, ((pred.shape[1] - shape_c) // 2):(
-            (pred.shape[1] - shape_c) // 2 + shape_c)]
+        img = pred[
+            :,
+            ((pred.shape[1] - shape_c) // 2) : (
+                (pred.shape[1] - shape_c) // 2 + shape_c
+            ),
+        ]
     else:
         new_rows = (predictions_shape[0] * shape_c) // predictions_shape[1]
         pred = cv2.resize(pred, (shape_c, new_rows))
-        img = pred[((pred.shape[0] - shape_r) // 2):(
-            (pred.shape[0] - shape_r) // 2 + shape_r), :]
+        img = pred[
+            ((pred.shape[0] - shape_r) // 2) : (
+                (pred.shape[0] - shape_r) // 2 + shape_r
+            ),
+            :,
+        ]
 
     return img / np.max(img) * 255

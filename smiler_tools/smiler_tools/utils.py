@@ -21,9 +21,9 @@ def get_image_path_tuples(input_dir, output_dir, recursive=False):
         for dirpath, dirnames, filenames in os.walk(input_dir):
             for filename in filenames:
                 input_path = os.path.join(dirpath, filename)
-                output_path = os.path.join(output_dir,
-                                           os.path.relpath(dirpath, input_dir),
-                                           filename)
+                output_path = os.path.join(
+                    output_dir, os.path.relpath(dirpath, input_dir), filename
+                )
                 image_path_map[input_path] = output_path
     else:
         image_path_map = {
@@ -45,23 +45,34 @@ def pretty_print_parameters(parameter_list):
     parameters = sorted(parameter_list, key=lambda x: x.name)
     if parameters:
         for param in parameters:
-            print('')
+            print("")
             print(param.name)
-            print('    Default:      {}'.format(param.value))
-            if (param.description):
-                print('    Description:  {}'.format('\n                  '.join(
-                    textwrap.wrap(param.description, break_on_hyphens=False))))
-            if (param.valid_values):
-                print('    Valid Values: {}'.format('\n                   '.join(
-                    textwrap.wrap(str(param.valid_values)))))
+            print("    Default:      {}".format(param.value))
+            if param.description:
+                print(
+                    "    Description:  {}".format(
+                        "\n                  ".join(
+                            textwrap.wrap(param.description, break_on_hyphens=False)
+                        )
+                    )
+                )
+            if param.valid_values:
+                print(
+                    "    Valid Values: {}".format(
+                        "\n                   ".join(
+                            textwrap.wrap(str(param.valid_values))
+                        )
+                    )
+                )
     else:
-        print('    None.')
+        print("    None.")
 
 
-
-def maybe_init_matlab_engine(matlab_tools_path='smiler_matlab_tools',
-                             startup_options="-nodesktop",
-                             init_iSMILER=False):
+def maybe_init_matlab_engine(
+    matlab_tools_path="smiler_matlab_tools",
+    startup_options="-nodesktop",
+    init_iSMILER=False,
+):
     """
     Only creates a matlab engine and initializes iSMILER the first time it is run.
     """

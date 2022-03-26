@@ -9,29 +9,30 @@ class ParameterMap(object):
         for name, properties in parameter_dict.items():
             if not isinstance(properties, dict):
                 raise ValueError(
-                    "Key '{}' has value '{}', expected dict.".format(
-                        name, properties))
+                    "Key '{}' has value '{}', expected dict.".format(name, properties)
+                )
             self.set(
                 name,
-                properties['default'],
-                description=properties.get('description'),
-                valid_values=properties.get('valid_values'))
+                properties["default"],
+                description=properties.get("description"),
+                valid_values=properties.get("valid_values"),
+            )
 
     def set(self, name, value, description=None, valid_values=None):
         if name in self._parameters:
             self._parameters[name].update(
-                value, description=description, valid_values=valid_values)
+                value, description=description, valid_values=valid_values
+            )
         else:
             self._parameters[name] = Parameter(
-                name,
-                value,
-                description=description,
-                valid_values=valid_values)
+                name, value, description=description, valid_values=valid_values
+            )
 
     def update(self, other_parameter_map):
         for name, parameter in other_parameter_map._parameters.items():
-            self.set(name, parameter.value, parameter.description,
-                     parameter.valid_values)
+            self.set(
+                name, parameter.value, parameter.description, parameter.valid_values
+            )
 
     def get_val(self, name):
         return self._parameters[name].value
@@ -58,10 +59,12 @@ class ParameterMap(object):
             if isinstance(struct[key], list):
                 if struct[key] and isinstance(struct[key][0], int):
                     struct[key] = matlab_engine.double(
-                        matlab_engine.cell2mat(struct[key]))
+                        matlab_engine.cell2mat(struct[key])
+                    )
                 elif len(struct[key]) == 0:
                     struct[key] = matlab_engine.double(
-                        matlab_engine.cell2mat(struct[key]))
+                        matlab_engine.cell2mat(struct[key])
+                    )
         return struct
 
     def clone(self):

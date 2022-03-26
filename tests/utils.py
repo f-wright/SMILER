@@ -9,7 +9,7 @@ import scipy
 import PIL
 
 HERE_PATH = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.join(HERE_PATH, '..', 'smiler_tools'))
+sys.path.append(os.path.join(HERE_PATH, "..", "smiler_tools"))
 
 import smiler_tools.utils
 import smiler_tools.config
@@ -60,19 +60,21 @@ def load_image_python(image_path):
 
 def init_matlab_engine():
     eng = smiler_tools.utils.maybe_init_matlab_engine(
-        matlab_tools_path=os.path.join(HERE_PATH, '..', 'smiler_matlab_tools'),
-        init_iSMILER=True)
+        matlab_tools_path=os.path.join(HERE_PATH, "..", "smiler_matlab_tools"),
+        init_iSMILER=True,
+    )
     return eng
 
 
 def get_parameter_map():
     config = smiler_tools.config.SmilerConfig(
-        os.path.join(HERE_PATH, '..', "config.json"))
+        os.path.join(HERE_PATH, "..", "config.json")
+    )
     return config.parameter_map
 
 
 def matlab_pre_and_post(img, parameter_struct, eng):
-    img = eng.checkImgInput(img, parameter_struct['color_space'], True)
+    img = eng.checkImgInput(img, parameter_struct["color_space"], True)
     img = eng.mean(img, 3)
     img = eng.fmtOutput(img, parameter_struct)
     return img
@@ -95,7 +97,7 @@ def assert_images_are_similar(img1, img2, tolerance=0.99):
 
 
 def saliency_via_shell_interface(algorithm_name, image_path):
-    PATH_TO_CLI = os.path.join(HERE_PATH, '../smiler')
+    PATH_TO_CLI = os.path.join(HERE_PATH, "../smiler")
 
     with tempfile.TemporaryDirectory() as tmp_indir:
         image_name = os.path.basename(image_path)
@@ -103,7 +105,12 @@ def saliency_via_shell_interface(algorithm_name, image_path):
 
         with tempfile.TemporaryDirectory() as tmp_outdir:
             run_command = [
-                PATH_TO_CLI, 'run', '-m', algorithm_name, tmp_indir, tmp_outdir
+                PATH_TO_CLI,
+                "run",
+                "-m",
+                algorithm_name,
+                tmp_indir,
+                tmp_outdir,
             ]
             subprocess.call(run_command)
 

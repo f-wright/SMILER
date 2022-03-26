@@ -4,7 +4,7 @@ import os
 import sys
 import numpy as np
 
-os.environ['GLOG_minloglevel'] = '3'  # Suppress logging.
+os.environ["GLOG_minloglevel"] = "3"  # Suppress logging.
 
 from smiler_tools.runner import run_model
 
