@@ -31,8 +31,10 @@ def main():
     # Now we import the deep gaze model from the tensorflow meta-graph file
     tf.reset_default_graph()
 
+    print("before checkpoint")
     check_point = 'DeepGazeII.ckpt'
     saver = tf.train.import_meta_graph('{}.meta'.format(check_point))
+    print("after saver")
 
     input_tensor = tf.get_collection('input_tensor')[0]
     centerbias_tensor = tf.get_collection('centerbias_tensor')[0]
@@ -40,8 +42,11 @@ def main():
     log_density_wo_centerbias = tf.get_collection('log_density_wo_centerbias')[
         0]
 
+    print("before sess")
     sess = tf.Session()
+    print("before restore")
     saver.restore(sess, check_point)
+    print("after restore")
 
     def compute_saliency(image_path):
         img = imread(image_path, mode='RGB')
@@ -88,7 +93,9 @@ def main():
 
         return sm
 
+    print("about to compute saliency")
     run_model(compute_saliency)
+    print("done with computing saliency")
 
 
 if __name__ == "__main__":

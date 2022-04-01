@@ -39,8 +39,11 @@ def main():
     log_density_wo_centerbias = tf.get_collection('log_density_wo_centerbias')[
         0]
 
+    print("before sess")
     sess = tf.Session()
+    print("after sess")
     saver.restore(sess, check_point)
+    print("after restore")
 
     def compute_saliency(image_path):
         img = imread(image_path, mode='RGB')

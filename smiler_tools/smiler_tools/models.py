@@ -162,7 +162,7 @@ class DockerModel(SMILERModel):
         parameter_map.update(experiment_parameter_map)
 
         model_run_command = [
-            "docker", "run", "-it", "--volume",
+            "docker", "run", "-it", "--gpus", "all", "--volume",
             "{}:/opt/model".format(model_dir), "--volume",
             "{}:/opt/input_vol".format(input_dir), "--volume",
             "{}:/opt/output_vol".format(output_dir), "--shm-size=128m", "-e",
