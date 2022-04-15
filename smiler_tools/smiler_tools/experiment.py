@@ -80,7 +80,6 @@ class Experiment(object):
     def run(self):
         for run in self._runs:
             run.run(self._experiment_parameter_map)
-move conda environment between computers
 
 class ExperimentRun(object):
     def __init__(self,
