@@ -80,7 +80,7 @@ class Experiment(object):
     def run(self):
         for run in self._runs:
             run.run(self._experiment_parameter_map)
-
+move conda environment between computers
 
 class ExperimentRun(object):
     def __init__(self,
@@ -104,6 +104,8 @@ class ExperimentRun(object):
         utils.print_pretty_header(self._model.name)
 
         print("Setting up model...")
+        
+        self._model.update_docker_image()
         self._model.maybe_run_setup()
 
         my_run_map = experiment_parameter_map.clone()
