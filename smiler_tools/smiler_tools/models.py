@@ -158,7 +158,7 @@ class DockerModel(SMILERModel):
         parameter_map.update(self.parameter_map)
         parameter_map.update(experiment_parameter_map)
 
-        if GPUtil.getAvailable() == []: # no available GPUs
+        if GPUtil.getAvailable() == [] or self.name == "SAM": # no available GPUs (and SAM hardcoded CPU)
             model_run_command = [
                 "docker", "run", "-it", "--volume",
                 "{}:/opt/model".format(model_dir), "--volume",
