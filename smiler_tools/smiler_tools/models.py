@@ -158,15 +158,26 @@ class DockerModel(SMILERModel):
         parameter_map.update(self.parameter_map)
         parameter_map.update(experiment_parameter_map)
 
-        model_run_command = [
-            "docker", "run", "-it", "--volume",
-            "{}:/opt/model".format(model_dir), "--volume",
-            "{}:/opt/input_vol".format(input_dir), "--volume",
-            "{}:/opt/output_vol".format(output_dir), "--shm-size=128m", "-e",
-            "SMILER_PARAMETER_MAP={}".format(
-                json.dumps(
-                    parameter_map.get_pair_dict())), "--rm", self.docker_image
-        ] + self.run_command
+        if GPUtil.getAvailable() == []: # no available GPUs
+            model_run_command = [
+                "docker", "run", "-it", "--volume",
+                "{}:/opt/model".format(model_dir), "--volume",
+                "{}:/opt/input_vol".format(input_dir), "--volume",
+                "{}:/opt/output_vol".format(output_dir), "--shm-size=128m", "-e",
+                "SMILER_PARAMETER_MAP={}".format(
+                    json.dumps(
+                        parameter_map.get_pair_dict())), "--rm", self.docker_image
+            ] + self.run_command
+        else:
+            model_run_command = [
+                "docker", "run", "-it", "--gpus", "all", "--volume",
+                "{}:/opt/model".format(model_dir), "--volume",
+                "{}:/opt/input_vol".format(input_dir), "--volume",
+                "{}:/opt/output_vol".format(output_dir), "--shm-size=128m", "-e",
+                "SMILER_PARAMETER_MAP={}".format(
+                    json.dumps(
+                        parameter_map.get_pair_dict())), "--rm", self.docker_image
+            ] + self.run_command
         return self._run_in_shell(model_run_command)
 
     def shell(self):
@@ -176,11 +187,18 @@ class DockerModel(SMILERModel):
 
         model_dir = os.path.join(self.path, 'model')
 
-        model_run_command = [
-            "docker", "run", "-it", "--volume",
-            "{}:/opt/model".format(model_dir), "-w", "/opt/model", "--rm",
-            self.docker_image
-        ] + self.shell_command
+        if GPUtil.getAvailable() == []: # no available GPUs
+            model_run_command = [
+                "docker", "run", "-it", "--volume",
+                "{}:/opt/model".format(model_dir), "-w", "/opt/model", "--rm",
+                self.docker_image
+            ] + self.shell_command
+        else:
+            model_run_command = [
+                "docker", "run", "-it", "--gpus", "all", "--volume",
+                "{}:/opt/model".format(model_dir), "-w", "/opt/model", "--rm",
+                self.docker_image
+            ] + self.shell_command
 
         return self._run_in_shell(model_run_command)
 
