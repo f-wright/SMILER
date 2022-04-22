@@ -89,18 +89,20 @@ class SMILERModel(object):
                 should_redownload = True
                 break
 
-        if should_redownload:
-            print("Downloading and extracting model files:")
-            for model_file in self.model_files:
-                print("    " + model_file)
-            self._download_and_extract_model_files()
+        # if should_redownload:
+        #     print("Downloading and extracting model files:")
+        #     for model_file in self.model_files:
+        #         print("    " + model_file)
+        #     self._download_and_extract_model_files()
 
     def _download_and_extract_model_files(self):
         url = MODEL_BASE_URL + self.name + "/model.zip"
 
-        temp_dir_path = tempfile.mkdtemp()
+        # temp_dir_path = tempfile.mkdtemp()
+        temp_dir_path = '/tmp/tmpfp2gre9y/'
         temp_file = "model.zip"
         temp_file_path = os.path.join(temp_dir_path, temp_file)
+        print("FILEPATH: ", temp_file_path)
 
         try:
             urllib.request.urlretrieve(url, temp_file_path) 
